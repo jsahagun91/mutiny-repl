@@ -47,6 +47,44 @@ const getInfo = async function ()  {
   await connectToNode();
 };
 
+// https://lightning.engineering/api-docs/api/lnd/lightning/list-channels
+const loadChannels = async function () {
+  try {
+    const options = {
+      method: "GET",
+      url: `${host}:${port}/v1/channels`,
+      headers: {
+        "grpc-metadata-macaroon": macaroon,
+      },
+    };
+
+const response = await axios(options);
+    console.log("load channels", response.data);
+
+    if (response.data?.channels.length > 0) {
+      setChannels(response.data.channels);
+
+      // Calculate total inbound and outbound liquidity
+      let inbound = 0;
+      let outbound = 0;
+      response.data.channels.forEach((channel) => {
+        if (channel.initiator) {
+          outbound += parseInt(channel.local_balance, 10);
+          inbound += parseInt(channel.remote_balance, 10);
+        } else {
+          inbound += parseInt(channel.local_balance, 10);
+          outbound += parseInt(channel.remote_balance, 10);
+        }
+      });
+
+      setInbound(inbound);
+      setOutbound(outbound);
+    }
+  } catch (error) {
+    alert(`Failed to load channels: ${JSON.stringify(error.response?.data)}`);
+  }
+};
+
   return (
     <main>
       React ⚛️ + Vite ⚡ + Replit
