@@ -108,6 +108,13 @@ const loadOnchainBalance = async function () {
   }
 };
 
+const loadAll = async function () {
+  await getInfo();
+  await loadChannels();
+  await loadChannelBalances();
+  await loadOnchainBalance();
+};
+
   return (
     <main>
       React ⚛️ + Vite ⚡ + Replit
