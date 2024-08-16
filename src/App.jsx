@@ -34,7 +34,19 @@ function App() {
       `Failed to connect to the node: $(JSON,stringify(error.response?.data))`,
     );
   } 
-}
+};
+
+const connect = async () => {
+  await connectToNode();
+  setShowConnectForm(false);
+  await loadAll();
+};
+
+ // https://lightning.engineering/api-docs/api/lnd/lightning/get-info
+const getInfo = async function ()  {
+  await connectToNode();
+};
+
   return (
     <main>
       React ⚛️ + Vite ⚡ + Replit
