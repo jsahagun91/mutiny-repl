@@ -85,6 +85,29 @@ const response = await axios(options);
   }
 };
 
+// https://lightning.engineering/api-docs/api/lnd/lightning/wallet-balance
+const loadOnchainBalance = async function () {
+  try {
+    const options = {
+      method: 'GET',
+      url: `${host}:{port}/v1/balance/blockchain`,
+      headers: {
+        "grpc-metadata-macaroon": macaroon,
+      },
+    };
+
+    const response = await axios(options);
+
+    if(response.data) {
+      setOnchainBalance(response.data.total_balance);
+    }
+  } catch (error) {
+    alert(
+      `Failed to load onchain balance: ${JSON.stringify(error.response?.data)}`,
+    );
+  }
+};
+
   return (
     <main>
       React ⚛️ + Vite ⚡ + Replit
