@@ -116,8 +116,28 @@ const loadAll = async function () {
 };
 
   return (
-    <main>
-      React ⚛️ + Vite ⚡ + Replit
-    </main>
+    <div className='App'>
+      <header className='App-header'>
+        <h1 Lightning Node Dashboard</h1>
+        (connectedNode?.identity_pubkey ? (
+          <p> Connected to: {connectedNode.alias}</p>
+        ) : (
+          <p>Not connected</p>
+        ))
+      </header>
+
+    { /* Refresh button  */}
+    {connectedNode?.identity_pubkey && (
+      <>
+        <button className='refresh-button' onClick={loadAll}>
+          Refresh
+        </button>
+
+        <p className='block-height'>
+          Block Height: {connectedNode.block_height}
+        </p>
+      </>
+    )}
+    </div>
   )
 }
