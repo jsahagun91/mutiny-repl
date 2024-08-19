@@ -118,12 +118,12 @@ const loadAll = async function () {
   return (
     <div className='App'>
       <header className='App-header'>
-        <h1 Lightning Node Dashboard</h1>
-        (connectedNode?.identity_pubkey ? (
+        <h1> Lightning Node Dashboard</h1>
+      {connectedNode?.identity_pubkey ? (
           <p> Connected to: {connectedNode.alias}</p>
         ) : (
           <p>Not connected</p>
-        ))
+      )}
       </header>
 
     { /* Refresh button  */}
@@ -138,6 +138,63 @@ const loadAll = async function () {
         </p>
       </>
     )}
-    </div>
-  )
-}
+
+    {/* connect button */ }
+    {!connectedNode?.identity_pubkey && (
+      <button
+        className='connect-button'
+        onClick={() => setShowConnectForm(true)}
+      >
+        Connect to your node
+      </button>
+
+    { /* connect form */}
+     {showConnectForm && (
+       <div className='connect-form'>
+        <input
+          type="text"
+          placeholder='Host'
+          value={host}
+          onChange={(e) => setHost(e.target.value)}
+        />
+         <input 
+           type='text'
+           placeholder='Port'
+           value={port}
+           onChange={(e) => setPort(e.target.value)}
+        />
+
+         <input
+           placeholder='Macaroon'
+           value={macaroon}
+           onChange={(e) => setMacaroon(e.target.value)}
+        />
+         <button onClick={connect}>Connect</button>
+       </div>
+     )}
+
+     {/* connected */}
+     {connectedNode?.identity_pubkey && (
+       <h2>Connected to {connectedNode?.identity_pubkey}</h2>
+     )}
+
+     {/* balance */}
+     {connectedNode?.identity_pubkey && (
+       <div className='balances'>
+        <div className='balance'>
+          <h3>Onchain Balance</h3>
+          <p>{onchainBalance} sats</p>
+        </div>
+        <div className='balance'>
+          <h3>Total Inbound Liquidity</h3>
+          <p>{inbound} sats</p>
+        </div>
+        <div className='balance'>
+          <h3>Total Outbound Liquidity</h3>
+          <p>{outbound} sats</p>
+        </div>
+       </div>
+     )}
+     </div>
+    );
+
