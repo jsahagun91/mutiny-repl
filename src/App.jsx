@@ -16,13 +16,13 @@ function App() {
 
   const connectToNode = async () => {
     try {
-      const response = await axios.get(`$(host):$(port)/v1/getInfo`, {
+      const response = await axios.get(`${host}:${port}/v1/getinfo`, {
         headers: {
           "grpc-metadata-macaroon": macaroon,
         },
       });
 
-      console.log("connect response", removeEventListeneresponse.data);
+      console.log("connect response", response.data);
 
       if (response.data) {
         setConnectedNode(response.data);
@@ -31,7 +31,7 @@ function App() {
       }
     } catch (error) {
       alert(
-        `Failed to connect to the node: $(JSON,stringify(error.response?.data))`,
+        `Failed to connect to the node: ${JSON.stringify(error.response?.data)}`,
       );
     }
   };
@@ -90,7 +90,7 @@ function App() {
     try {
       const options = {
         method: "GET",
-        url: `${host}:{port}/v1/balance/blockchain`,
+        url: `${host}:${port}/v1/balance/blockchain`,
         headers: {
           "grpc-metadata-macaroon": macaroon,
         },
