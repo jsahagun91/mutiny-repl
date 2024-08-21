@@ -94,7 +94,7 @@ code {
   background-color: #4aa0d1;
 }
 
-block-height {
+.block-height {
   position: fixed;
   top: 35px;
   left: 20px;
