@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './components.css';
+import React, { useState } from "react";
+import axios from "axios";
+import "./components.css";
 
 const Channels = ({ channels, jost, port, macaroon, loadChannels }) => {
   const [showOpenChannelFrom, setShowOpenChannelForm] = useState(false);
@@ -18,12 +18,12 @@ const Channels = ({ channels, jost, port, macaroon, loadChannels }) => {
     );
   }
 
-   // https://lightning.engineering/api-docs/api/lnd/lightning/open-channel-sync
+  // https://lightning.engineering/api-docs/api/lnd/lightning/open-channel-sync
   const openChannel = async () => {
     try {
       const options = {
         method: "POST",
-        url: `${host:${port}/v1/channels`,
+        url: `${host}:${port}/v1/channels`,
         data: {
           node_pubkey: hexToBase64(nodePubkey),
           local_funding_amount: localFundingAmount,
@@ -46,4 +46,57 @@ const Channels = ({ channels, jost, port, macaroon, loadChannels }) => {
       alert(`Failed to open channel: ${JSON.stringify(error.response?.data)}`);
     }
   };
-}
+
+  return (
+    <div className="channels">
+      <h2>Channels</h2>
+      <button onClick={() => setShowOpenChannelForm(!showOpenChannelForm)}>
+        Open Channel
+      </button>
+
+      {/* open channel form */}
+
+      {showOpenChannelForm && (
+        <div className="open-channel-form">
+          <input
+            type="text"
+            placeholder="Node Pubkey"
+            value={nodePubkey}
+            onChange={(e) => setNodePubkey(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Local Funding Amount (sats)"
+            value={localFundingAmount}
+            onChange={(e) => setLocalFundingAmount(e.target.value)}
+          />
+          <button onClick={openChannel}>Open Channel</button>
+        </div>
+      )}
+
+      {/* channels table */}
+      <table>
+        <thead>
+          <tr>
+            <th>Channel ID</th>
+            <th>Local Balance</th>
+            <th>Remote balance</th>
+            <th>Capacity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {channels.map((c) => (
+            <tr key={c.chan_id}>
+              <td>{c.chan_id}</td>
+              <td>{c.local_balance}</td>
+              <td>{c.remote_balance}</td>
+              <td>{c.capacity}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default Channels;
