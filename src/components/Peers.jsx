@@ -32,5 +32,39 @@ function Peers({ host, port, macaroon }) {
     }
   };
 
-  
-}
+  const addPeer = async () => {
+    try {
+      const options = {
+        method: "POST",
+        url: `${host}:${port}/v1/peers`,
+        data: {
+          addr: {
+          pubkey: peerPubkey,
+          host: peerHost,
+        },
+        perm: true,
+      },
+        headers: {
+          "grpc-metadata-macaroon": macaroon,
+        },
+    };
+
+    const response = await axios(options);
+    console.log("Add peer response:", response.data);
+
+    alert("Peer added successfully.");
+    setShowAddPeerForm(false);
+    loadPeers();
+  } catch (error) {
+    alert(`Failed to add peer: ${JSON.stringify(error.response?.data)}`); 
+  }
+};
+
+return (
+  <div className="peers">
+    <h2>Peers</h2>
+    <button onClick={() => setShowAddPeerForm(!showAddPeerForm)}>
+      Add Peer
+    </button>
+  </div>
+)
