@@ -66,5 +66,48 @@ return (
     <button onClick={() => setShowAddPeerForm(!showAddPeerForm)}>
       Add Peer
     </button>
+
+    {showAddPeerForm && (
+      <div className="add-peer-form">
+        <input
+          type='text'
+          placeholder="Peer Pubkey"
+          value={peerPubkey}
+          onChange={(e) => setPeerPubkey(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Peer Host"
+          value={peerHost}
+          onChange={(e) => setPeerHost(e.target.value)}
+        />
+        <button onClick={addPeer}>Add Peer</button>
+      </div>
+    
+
+    {/* peers table */}
+    <table>
+      <thead>
+        <tr>
+          <th>Pubkey</th>
+          <th>Address</th>
+          <th>Bytes Sent</th>
+          <th>Bytes Received</th>
+        </tr>
+      </thead>
+      <tbody>
+        {peers.map((peer) => (
+        <tr key={peer.pub_key}>
+          <td>{peer.pub_key}</td>
+          <td>{peer.address}</td>
+          <td>{peer.bytes_sent}</td>
+          <td>{peer.bytes_recv}</td>
+        </tr>
+        ))}
+      </tbody>
+    </table>
   </div>
-)
+  );
+}
+
+export default Peers;
